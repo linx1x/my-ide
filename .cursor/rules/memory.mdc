@@ -1,0 +1,11 @@
+---
+description: Use and maintain local project memory
+alwaysApply: true
+---
+
+# Project Memory
+
+- **Read** `.cursor/memory.md` when starting work or when project context would help.
+- **Update** it when you learn something worth remembering (architecture decisions, gotchas, user preferences, conventions).
+- Keep memory entries concise; append to the "Lessons Learned" section or add new sections as needed.
+- Do not duplicate information already in README or config—reference those instead.

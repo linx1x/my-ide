@@ -1,0 +1,4 @@
+# Temporary allowlist snapshot for files that still use @ts-nocheck.
+# Remove entries as files are migrated and keep this list shrinking.
+# One path per line, repo-relative.
+scripts/check-no-new-ts-nocheck.ts

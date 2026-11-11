@@ -1,0 +1,103 @@
+/* Mastra agent sidebar */
+.agent-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.agent-provider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted, #888);
+}
+
+.agent-provider-select {
+  flex: 1;
+  max-width: 200px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated, var(--bg));
+  color: var(--fg);
+}
+
+.agent-chat-log {
+  flex: 1;
+  min-height: 120px;
+  max-height: 42vh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--bg-elevated, rgba(0, 0, 0, 0.15));
+}
+
+.agent-msg {
+  margin-bottom: 10px;
+}
+
+.agent-msg-role {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted, #888);
+  margin-bottom: 4px;
+}
+
+.agent-msg-text {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+
+.agent-msg--streaming .agent-msg-text {
+  opacity: 0.85;
+}
+
+.agent-error {
+  color: var(--danger, #f87171);
+  font-size: 12px;
+}
+
+.agent-chat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agent-chat-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 64px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.agent-send-btn {
+  align-self: flex-end;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--accent);
+  color: var(--accent-fg, #fff);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.agent-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

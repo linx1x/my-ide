@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MacBook Pro — Apple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000;
+      --surface: #0d0d0d;
+      --text: #f5f5f7;
+      --muted: #86868b;
+      --accent: #0071e3;
+      --glow: rgba(255,255,255,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.5rem 6rem;
+      position: relative;
+    }
+    .hero .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 0.2s forwards;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 0.35s forwards;
+    }
+    .hero .tagline {
+      font-size: clamp(1.15rem, 3vw, 1.5rem);
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 28ch;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease-out 0.5s forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .scroll-hint .chevron {
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      margin-top: -4px;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+    .showcase-section {
+      min-height: 120vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 1.5rem;
+      position: relative;
+    }
+    .showcase-section .content {
+      text-align: center;
+      max-width: 900px;
+    }
+    .showcase-section h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .showcase-section .sub {
+      font-size: 1.125rem;
+      color: var(--muted);
+      margin-bottom: 4rem;
+    }
+
+    .macbook-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      --scroll-progress: 0;
+    }
+    .macbook-wrap .device {
+      transform: scale(calc(0.7 + 0.3 * var(--scroll-progress))) translateY(calc((1 - var(--scroll-progress)) * 80px));
+      opacity: var(--scroll-progress);
+      transition: none;
+    }
+    .macbook-svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 40px 60px rgba(0,0,0,0.5));
+    }
+    .macbook-svg .screen-bg { fill: #1d1d1f; }
+    .macbook-svg .screen-content { fill: url(#screenGrad); }
+    .macbook-svg .body { fill: #2d2d2d; }
+    .macbook-svg .base { fill: #1a1a1a; }
+    .macbook-svg .highlight { fill: rgba(255,255,255,0.08); }
+
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 6rem auto 0;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+    .specs .spec h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .specs .spec p {
+      font-size: 0.9375rem;
+      color: var(--muted);
+    }
+    .specs .spec {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .specs .spec.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .specs .spec.visible:nth-child(1) { transition-delay: 0s; }
+    .specs .spec.visible:nth-child(2) { transition-delay: 0.1s; }
+    .specs .spec.visible:nth-child(3) { transition-delay: 0.2s; }
+    .specs .spec.visible:nth-child(4) { transition-delay: 0.3s; }
+
+    .cta-section {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 1.5rem;
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      color: var(--muted);
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .cta-section a {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 980px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cta-section a:hover {
+      background: #0077ed;
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <span class="badge">MacBook Pro</span>
+    <h1>Supercharged for pros.</h1>
+    <p class="tagline">The most powerful MacBook Pro ever. M3 Max. Extreme performance.</p>
+    <div class="scroll-hint">
+      <span class="chevron"></span>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <section class="showcase-section" id="showcase">
+    <div class="content">
+      <h2>Stunning display. Unmatched power.</h2>
+      <p class="sub">Liquid Retina XDR. Up to 128GB unified memory.</p>
+      <div class="macbook-wrap" id="macbookWrap">
+        <div class="device" id="macbookDevice">
+          <svg class="macbook-svg" viewBox="0 0 960 560" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#2d2d2f" />
+                <stop offset="100%" style="stop-color:#1d1d1f" />
+              </linearGradient>
+            </defs>
+            <!-- Screen -->
+            <g transform="translate(180, 40)">
+              <rect x="0" y="0" width="600" height="380" rx="12" class="screen-bg" />
+              <rect x="8" y="8" width="584" height="364" rx="8" class="screen-content" />
+              <rect x="8" y="8" width="584" height="28" rx="8" fill="rgba(0,0,0,0.3)" />
+              <circle cx="308" cy="22" r="6" fill="#3d3d3d" />
+              <rect x="280" y="60" width="240" height="140" rx="4" fill="rgba(255,255,255,0.04)" />
+              <text x="400" y="140" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif" font-size="14">MacBook Pro</text>
+              <rect x="284" y="220" width="120" height="8" rx="4" fill="rgba(255,255,255,0.06)" />
+              <rect x="284" y="236" width="180" height="8" rx="4" fill="rgba(255,255,255,0.06)" />
+            </g>
+            <!-- Hinge -->
+            <rect x="460" y="418" width="40" height="22" rx="2" class="body" />
+            <!-- Base -->
+            <path d="M140 440 L140 520 Q140 538 158 538 L802 538 Q820 538 820 520 L820 440 Z" class="base" />
+            <rect x="140" y="436" width="680" height="8" class="body" />
+            <ellipse cx="480" cy="532" rx="120" ry="4" class="highlight" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="specs" id="specs">
+    <div class="spec" data-spec><h3>M3 Max</h3><p>Chip</p></div>
+    <div class="spec" data-spec><h3>128GB</h3><p>Unified memory</p></div>
+    <div class="spec" data-spec><h3>Liquid Retina XDR</h3><p>Display</p></div>
+    <div class="spec" data-spec><h3>Up to 22 hrs</h3><p>Battery life</p></div>
+  </div>
+
+  <section class="cta-section">
+    <h2>Ready to create?</h2>
+    <p>Get MacBook Pro and build what’s next.</p>
+    <a href="#">Buy</a>
+  </section>
+
+  <script>
+    (function () {
+      const section = document.getElementById('showcase');
+      const wrap = document.getElementById('macbookWrap');
+      const device = document.getElementById('macbookDevice');
+      const specs = document.querySelectorAll('.specs [data-spec]');
+
+      function onScroll() {
+        if (!section || !wrap || !device) return;
+        const rect = section.getBoundingClientRect();
+        const viewH = window.innerHeight;
+        const start = -viewH * 0.1;
+        const end = viewH * 0.5;
+        const t = (rect.top - end) / (start - end);
+        const progress = Math.max(0, Math.min(1, t));
+        wrap.style.setProperty('--scroll-progress', progress);
+      }
+
+      const specObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, { rootMargin: '0px 0px -80px 0px', threshold: 0.1 });
+      specs.forEach(function (el) { specObserver.observe(el); });
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

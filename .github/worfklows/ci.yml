@@ -1,0 +1,21 @@
+# Copy this to .github/workflows/ci.yml in your repo
+# Adjust steps for your project (e.g. add tests, lint)
+name: CI
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      # - run: npm test
+      # - run: npm run lint

@@ -1,0 +1,24 @@
+node_modules/
+auth_store/
+chat_history/
+bridge-data/
+.env
+.cursor/*.log
+marketing-video/build/
+src/dashboard/client/node_modules/
+src/dashboard/client/dist/
+marketing-video/capture-token.txt
+
+# Large dashboard assets (GitHub 100MB limit; add locally — see public/models/README.md & public/textures/README.md)
+src/dashboard/client/public/models/*.glb
+src/dashboard/client/public/textures/*
+!src/dashboard/client/public/textures/README.md
+
+# Local / generated files that must stay private
+qr-code.png
+.cursor-uploads/
+.claude/settings.local.json
+.claude/worktrees/
+.tmp-*.txt
+marketing-video/out/
+marketing-video/public/captures/*.png

@@ -1,0 +1,473 @@
+body[data-theme="matrix"] {
+  --bg: #0a0a0a;
+  --bg-dark: #0a0a0a;
+  --surface: #0d150d;
+  --surface-light: #121f12;
+  --border: #1f521f;
+  --text: #33ff00;
+  --text-bright: #33ff00;
+  --muted: #1f521f;
+  --accent: #33ff00;
+  --accent-hover: #33ff00;
+  --accent-focus: rgba(51, 255, 0, 0.4);
+  --primary: #33ff00;
+  --secondary: #ffb000;
+  --success: #33ff00;
+  --success-bg: rgba(51, 255, 0, 0.15);
+  --error: #ff3333;
+  --error-bg: rgba(255, 51, 51, 0.2);
+  --warning: #ffb000;
+  --activity-bg: #0a0a0a;
+  --terminal-bg: #0a0a0a;
+  --radius: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --text-glow: 0 0 5px rgba(51, 255, 0, 0.5);
+  --focus-glow: 0 0 0 1px var(--accent-focus);
+  --font-ui: "JetBrains Mono", "Fira Code", "VT323", "Courier New", monospace;
+  --font-mono: "JetBrains Mono", "Fira Code", "VT323", "Courier New", monospace;
+  --scrollbar-track: #0a0a0a;
+  --scrollbar-thumb: #1f521f;
+  --scrollbar-thumb-hover: #33ff00;
+  --scrollbar-radius: 0;
+  --search-match-bg: rgba(51, 255, 0, 0.25);
+  --search-match-fg: #33ff00;
+}
+
+/* --- Matrix (Terminal CLI) theme: base and typography --- */
+body[data-theme="matrix"],
+body[data-theme="matrix"] button,
+body[data-theme="matrix"] input,
+body[data-theme="matrix"] select,
+body[data-theme="matrix"] textarea {
+  font-family: var(--font-ui);
+}
+body[data-theme="matrix"] {
+  text-shadow: var(--text-glow);
+}
+body[data-theme="matrix"] .sidebar-title,
+body[data-theme="matrix"] .settings-section-title,
+body[data-theme="matrix"] .chat-view-mode-btn,
+body[data-theme="matrix"] .theme-name,
+body[data-theme="matrix"] .command-bar-title,
+body[data-theme="matrix"] h1, body[data-theme="matrix"] h2, body[data-theme="matrix"] h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+body[data-theme="matrix"] .text-glow {
+  text-shadow: var(--text-glow);
+}
+
+/* --- Matrix: scanline overlay (CRT effect) --- */
+body[data-theme="matrix"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  opacity: 0.4;
+}
+
+/* --- Matrix: buttons (bracket / block, hover invert) --- */
+body[data-theme="matrix"] .theme-card,
+body[data-theme="matrix"] .activity-btn,
+body[data-theme="matrix"] .command-btn,
+body[data-theme="matrix"] .icon-btn,
+body[data-theme="matrix"] .chat-view-mode-btn,
+body[data-theme="matrix"] .login-card button,
+body[data-theme="matrix"] .project-modal-actions button,
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input-actions button,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-attach-btn,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-send-btn,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-voice-btn,
+body[data-theme="matrix"] .bottom-nav-btn,
+body[data-theme="matrix"] .project-modal-tabs button,
+body[data-theme="matrix"] .name-animation-buttons button {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+body[data-theme="matrix"] .theme-card:hover,
+body[data-theme="matrix"] .activity-btn:hover,
+body[data-theme="matrix"] .command-btn:hover:not(:disabled),
+body[data-theme="matrix"] .icon-btn:hover,
+body[data-theme="matrix"] .chat-view-mode-btn:hover,
+body[data-theme="matrix"] .login-card button:hover:not(:disabled),
+body[data-theme="matrix"] .project-modal-actions button:hover:not(:disabled),
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input-actions button:hover:not(:disabled),
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-attach-btn:hover:not(:disabled),
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-send-btn:hover:not(:disabled),
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-voice-btn:hover:not(:disabled),
+body[data-theme="matrix"] .bottom-nav-btn:hover,
+body[data-theme="matrix"] .project-modal-tabs button:hover {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input-actions button,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-attach-btn,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-send-btn,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-voice-btn {
+  border: none;
+}
+
+body[data-theme="matrix"] .bottom-nav-btn.is-active,
+body[data-theme="matrix"] .bottom-nav-btn.is-active:hover,
+body[data-theme="matrix"] .bottom-nav-btn.is-active:focus-visible {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+body[data-theme="matrix"] .bottom-nav-btn.is-active .bottom-nav-icon-wrap svg {
+  color: var(--accent);
+  filter:
+    drop-shadow(0 0 2px color-mix(in srgb, var(--accent) 50%, transparent))
+    drop-shadow(0 0 5px color-mix(in srgb, var(--accent) 20%, transparent))
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+}
+
+body[data-theme="matrix"] .theme-card.active,
+body[data-theme="matrix"] .activity-btn.active,
+body[data-theme="matrix"] .chat-view-mode-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+body[data-theme="matrix"] .activity-btn.active:hover {
+  background: var(--accent-hover, var(--accent));
+  color: var(--bg);
+}
+
+/* --- Matrix: cards and panels (1px border, no radius, title bar) --- */
+body[data-theme="matrix"] .sidebar,
+body[data-theme="matrix"] .sidebar-panel,
+body[data-theme="matrix"] .theme-card,
+body[data-theme="matrix"] .login-card,
+body[data-theme="matrix"] .main-content,
+body[data-theme="matrix"] .editor-area,
+body[data-theme="matrix"] .editor-container,
+body[data-theme="matrix"] .tab-bar,
+body[data-theme="matrix"] .status-bar,
+body[data-theme="matrix"] .chat-panel-body,
+body[data-theme="matrix"] .project-modal,
+body[data-theme="matrix"] .project-modal-content {
+  border-radius: 0;
+  border-color: var(--border);
+}
+body[data-theme="matrix"] .sidebar-header {
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+body[data-theme="matrix"] .sidebar-header .sidebar-title::before {
+  content: "+--- ";
+}
+body[data-theme="matrix"] .sidebar-header .sidebar-title::after {
+  content: " ---+";
+}
+
+/* --- Matrix: terminal panel (match other panels + CRT scanline) --- */
+body[data-theme="matrix"] .terminal-block,
+body[data-theme="matrix"] .terminal-panel {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  border-top: none;
+  background: var(--terminal-bg);
+}
+body[data-theme="matrix"] .terminal-panel {
+  position: relative;
+  overflow: hidden;
+}
+body[data-theme="matrix"] .terminal-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  opacity: 0.4;
+}
+
+/* --- Matrix: inputs (1px border, no radius, caret visible) --- */
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input,
+body[data-theme="matrix"] .chat-form input,
+body[data-theme="matrix"] .chat-form textarea,
+body[data-theme="matrix"] .login-card input,
+body[data-theme="matrix"] .search-input,
+body[data-theme="matrix"] .search-input-field,
+body[data-theme="matrix"] input[type="text"],
+body[data-theme="matrix"] input[type="search"],
+body[data-theme="matrix"] textarea {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  box-shadow: none;
+}
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input:focus,
+body[data-theme="matrix"] .chat-form input:focus,
+body[data-theme="matrix"] .chat-form textarea:focus,
+body[data-theme="matrix"] .login-card input:focus,
+body[data-theme="matrix"] .search-input:focus,
+body[data-theme="matrix"] .search-input-field:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: none;
+}
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input-wrap:focus-within {
+  box-shadow: none;
+  border-color: var(--accent);
+}
+/* Composer: one rounded shell only — no inner field rectangle */
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input,
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input:focus {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+body[data-theme="matrix"] input::placeholder,
+body[data-theme="matrix"] textarea::placeholder {
+  color: var(--muted);
+}
+/* Caret color for matrix inputs */
+body[data-theme="matrix"] input,
+body[data-theme="matrix"] textarea {
+  caret-color: var(--accent);
+}
+
+/* --- Matrix: animation utilities --- */
+body[data-theme="matrix"] .animate-blink {
+  animation: blink-cursor 1s step-end infinite;
+}
+body[data-theme="matrix"] .glitch-hover:hover {
+  text-shadow: 1px 0 var(--accent), -1px 0 var(--error);
+}
+
+/* --- Matrix: icons (primary color, consistent stroke) --- */
+body[data-theme="matrix"] .sidebar svg,
+body[data-theme="matrix"] .activity-bar svg,
+body[data-theme="matrix"] .icon-btn svg,
+body[data-theme="matrix"] .chat-input-actions svg,
+body[data-theme="matrix"] .command-btn svg {
+  color: var(--accent);
+  stroke: var(--accent);
+}
+/* Inactive: green. Only highlighted (active/hover) gets inverted tone. */
+body[data-theme="matrix"] .activity-btn svg {
+  color: var(--accent);
+  stroke: var(--accent);
+}
+body[data-theme="matrix"] .activity-btn.active svg,
+body[data-theme="matrix"] .activity-btn:hover svg {
+  color: var(--bg);
+  stroke: var(--bg);
+}
+body[data-theme="matrix"] .icon-btn:hover svg {
+  color: var(--bg);
+  stroke: var(--bg);
+}
+body[data-theme="matrix"] .chat-form-chatgpt .chat-input-actions button:hover:not(:disabled) svg,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-attach-btn:hover:not(:disabled) svg,
+body[data-theme="matrix"] .chat-form-chatgpt .chatgpt-send-btn:hover:not(:disabled) svg {
+  color: var(--bg);
+  stroke: var(--bg);
+}
+
+/* --- Matrix: chat bubbles (no radius, green border, uppercase labels) --- */
+body[data-theme="matrix"] .chat-message__bubble {
+  border-radius: 0;
+  border: 1px solid var(--border);
+}
+body[data-theme="matrix"] .chat-message--user .chat-message__bubble {
+  border-radius: 0;
+}
+body[data-theme="matrix"] .chat-message--agent .chat-message__bubble {
+  border-left-width: 3px;
+  border-left-color: var(--accent);
+  border-radius: 0;
+}
+body[data-theme="matrix"] .chat-message__label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+}
+body[data-theme="matrix"] .chat-message__avatar {
+  border-radius: 0;
+}
+body[data-theme="matrix"] .chat-suggestion,
+body[data-theme="matrix"] .chat-scroll-to-bottom {
+  border-radius: 0;
+  border: 1px solid var(--border);
+}
+/* --- Matrix: create-app flow & stack choice cards --- */
+
+/* Step progress: terminal style */
+body[data-theme="matrix"] .chat-create-app-step-progress {
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-shadow: var(--text-glow);
+}
+body[data-theme="matrix"] .chat-create-app-step-progress::before {
+  box-shadow: 0 0 4px var(--accent);
+}
+
+/* Template cards: sharp corners, terminal bracket border */
+body[data-theme="matrix"] .chat-create-app-card {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  background: transparent;
+  font-family: var(--font-mono);
+  text-shadow: var(--text-glow);
+  transform: none;
+}
+body[data-theme="matrix"] .chat-create-app-card::after { display: none; }
+body[data-theme="matrix"] .chat-create-app-card:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: 0 0 6px var(--accent), inset 0 0 6px color-mix(in srgb, var(--accent) 8%, transparent);
+  transform: none;
+}
+body[data-theme="matrix"] .chat-create-app-card-label {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+body[data-theme="matrix"] .chat-create-app-card-sub {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+
+/* Option buttons */
+body[data-theme="matrix"] .chat-create-app-opt {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-family: var(--font-mono);
+}
+body[data-theme="matrix"] .chat-create-app-opt:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+body[data-theme="matrix"] .chat-create-app-opt.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  box-shadow: 0 0 4px var(--accent);
+}
+body[data-theme="matrix"] .chat-create-app-opt-letter {
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+body[data-theme="matrix"] .chat-create-app-opt.selected .chat-create-app-opt-letter {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+/* Action buttons */
+body[data-theme="matrix"] .chat-create-app-btn {
+  border-radius: 0;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow: var(--text-glow);
+  transform: none;
+}
+body[data-theme="matrix"] .chat-create-app-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--bg);
+  opacity: 1;
+  box-shadow: 0 0 6px var(--accent);
+  transform: none;
+}
+body[data-theme="matrix"] .chat-create-app-suggest-btn {
+  border-radius: 0;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+body[data-theme="matrix"] .chat-create-app-input {
+  border-radius: 0;
+  font-family: var(--font-mono);
+  background: transparent;
+}
+
+/* Stack choice cards */
+body[data-theme="matrix"] .stack-choice-step-label {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  text-shadow: var(--text-glow);
+  letter-spacing: 0.1em;
+}
+body[data-theme="matrix"] .stack-choice-heading {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+body[data-theme="matrix"] .stack-choice-card {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  background: transparent;
+  font-family: var(--font-mono);
+  text-shadow: var(--text-glow);
+  transform: none;
+}
+body[data-theme="matrix"] .stack-choice-card::after { display: none; }
+body[data-theme="matrix"] .stack-choice-card:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: none;
+}
+body[data-theme="matrix"] .stack-choice-card.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  box-shadow: 0 0 6px var(--accent), 0 0 0 1px var(--accent);
+}
+body[data-theme="matrix"] .stack-choice-icon {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: transparent;
+}
+body[data-theme="matrix"] .stack-choice-card:hover .stack-choice-icon {
+  transform: none;
+}
+body[data-theme="matrix"] .stack-choice-label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 11px;
+}
+body[data-theme="matrix"] .stack-choice-recommended {
+  border-radius: 0;
+  font-family: var(--font-mono);
+}
+body[data-theme="matrix"] .stack-choice-custom-input,
+body[data-theme="matrix"] .stack-choice-custom-btn {
+  border-radius: 0;
+  font-family: var(--font-mono);
+}

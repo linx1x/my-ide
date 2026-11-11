@@ -1,0 +1,81 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #1e1e1e;
+  --bg-dark: #181818;
+  --surface: #252526;
+  --surface-light: #2d2d2d;
+  --border: #3c3c3c;
+  --text: #cccccc;
+  --text-bright: #e8e8e8;
+  --muted: #858585;
+  --accent: #007acc;
+  --accent-hover: #1a8ad4;
+  --accent-focus: rgba(0, 122, 204, 0.4);
+  --success: #4ec9b0;
+  --success-bg: #2ea04333;
+  --error: #f44747;
+  --error-bg: #f4474722;
+  --warning: #cca700;
+  --activity-bg: #333333;
+  --terminal-bg: #1e1e1e;
+  --radius: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --editor-tab-height: 36px;
+  /* Horizontal activity strip above sidebar (chat / explorer / search / git / more) */
+  --activity-top-bar-height: 44px;
+  --activity-top-btn-size: 34px;
+  --activity-top-icon-size: 20px;
+  --activity-top-float-radius: 16px;
+  --activity-top-float-blur: 18px;
+  --font-mono:
+    "JetBrains Mono", "Cascadia Code", "Fira Code", "Consolas", monospace;
+  --font-display: "Plus Jakarta Sans", "DM Sans", sans-serif;
+  --card-glow: rgba(0, 122, 204, 0.15);
+  --card-bg: var(--surface);
+  --panel: var(--surface);
+  --font-ui: var(--font-display);
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --motion-fast: 120ms ease-out;
+  --motion-panel: 150ms ease-out;
+  /* Unified caret / chevron (see AppCaret.tsx) */
+  --app-caret-size: 14px;
+  --app-caret-stroke: 2;
+  --app-caret-color: currentColor;
+  --app-caret-transition: transform var(--motion-fast);
+  --focus-glow: 0 0 0 1px var(--accent-focus);
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: var(--border);
+  --scrollbar-thumb-hover: var(--muted);
+  --scrollbar-radius: 4px;
+  --search-match-bg: #5a4a1a;
+  --search-match-fg: #e6c547;
+  /* Chat panel tokens (see docs/CHAT_UI_DESIGN_CRITIQUE.md) */
+  --chat-bubble-user-bg: rgba(0, 122, 204, 0.18);
+  --chat-bubble-user-border: rgba(0, 122, 204, 0.35);
+  --chat-input-wrap-radius: 14px;
+  --chat-input-btn-size: 36px;
+  --chat-voice-active-bg: rgba(239, 68, 68, 0.15);
+  --chat-voice-active-color: #ef4444;
+  --chat-message-gap: var(--space-2);
+  --chat-activity-bg: var(--surface-light);
+  /* Git graph (Source Control) — two alternating lane tones */
+  --git-graph-lane-a: color-mix(in srgb, var(--muted) 72%, var(--accent) 28%);
+  --git-graph-lane-b: color-mix(in srgb, var(--muted) 48%, var(--accent) 52%);
+  --git-graph-node-selected: var(--accent);
+  /* Project plan card — tech stack pill accents (themes may override) */
+  --plan-pill-frontend: #60a5fa;
+  --plan-pill-backend: #34d399;
+  --plan-pill-database: #a78bfa;
+  --plan-pill-styling: #fb923c;
+  --plan-pill-uiLibrary: #f472b6;
+}
+

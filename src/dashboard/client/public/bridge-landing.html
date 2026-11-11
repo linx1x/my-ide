@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cursor Bridge — talk to your IDE agent from WhatsApp. Stream updates, branch flows, and ship from anywhere." />
+  <title>Cursor Bridge — Your IDE, everywhere</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #05060a;
+      --bg-panel: rgba(12, 14, 24, 0.72);
+      --text: #e8eaf4;
+      --muted: #8b92ab;
+      --accent: #3dff9a;
+      --accent-dim: rgba(61, 255, 154, 0.15);
+      --border: rgba(255, 255, 255, 0.08);
+      --glow: rgba(61, 255, 154, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      z-index: 9999;
+      padding: 0.75rem 1rem;
+      background: var(--accent);
+      color: #04120a;
+      font-weight: 600;
+    }
+
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+    }
+
+    /* —— Hero + parallax stack —— */
+    .hero-wrap {
+      position: relative;
+      min-height: 115vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+    }
+
+    .parallax-stack {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .parallax-layer {
+      position: absolute;
+      inset: -20% 0 -10%;
+      background-size: cover;
+      background-position: center;
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .parallax-layer--far {
+      background-image: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=2400&q=80&auto=format&fit=crop");
+      opacity: 0.45;
+      filter: saturate(1.1) brightness(0.35);
+    }
+
+    .parallax-layer--mid {
+      background-image: url("https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=2400&q=80&auto=format&fit=crop");
+      opacity: 0.28;
+      mix-blend-mode: screen;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+    }
+
+    .parallax-layer--grid {
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(61, 255, 154, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61, 255, 154, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.5;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% -10%, rgba(61, 255, 154, 0.12), transparent 55%),
+        linear-gradient(180deg, transparent 0%, var(--bg-deep) 92%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 58rem;
+      padding: 6rem 1.5rem 8rem;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      animation: rise 0.9s ease-out 0.1s forwards;
+    }
+
+    h1 {
+      font-family: Syne, system-ui, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.4rem, 7vw, 4.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      animation: rise 0.9s ease-out 0.25s forwards;
+    }
+
+    .hero-lede {
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      color: var(--muted);
+      max-width: 38ch;
+      margin: 0 auto 2.5rem;
+      opacity: 0;
+      animation: rise 0.9s ease-out 0.4s forwards;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: rise 0.9s ease-out 0.55s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.95rem 1.75rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #04120a;
+      box-shadow: 0 0 0 0 var(--glow);
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px -8px var(--glow);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn--ghost:hover {
+      border-color: rgba(61, 255, 154, 0.35);
+      background: var(--accent-dim);
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      animation: cue 2.4s ease-in-out infinite;
+    }
+
+    .scroll-cue span:last-child {
+      width: 22px;
+      height: 22px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      margin-top: -6px;
+      opacity: 0.85;
+    }
+
+    @keyframes cue {
+      0%,
+      100% {
+        opacity: 0.55;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* —— Sections —— */
+    section {
+      position: relative;
+      padding: clamp(4rem, 12vw, 7rem) 1.5rem;
+    }
+
+    .section-title {
+      font-family: Syne, system-ui, sans-serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      max-width: 42ch;
+      margin: 0 auto 3rem;
+    }
+
+    .feature-band {
+      background: linear-gradient(180deg, var(--bg-deep) 0%, #0a0c14 50%, var(--bg-deep) 100%);
+    }
+
+    .feature-visual {
+      position: relative;
+      max-width: 72rem;
+      margin: 0 auto 3rem;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 21 / 9;
+      min-height: 200px;
+    }
+
+    .feature-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.04);
+      will-change: transform;
+    }
+
+    .feature-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(5, 6, 10, 0.85) 0%, transparent 45%, transparent 55%, rgba(5, 6, 10, 0.75) 100%);
+      pointer-events: none;
+    }
+
+    .grid-3 {
+      display: grid;
+      gap: 1.25rem;
+      max-width: 72rem;
+      margin: 0 auto;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.75rem 1.5rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(61, 255, 154, 0.22);
+      transform: translateY(-3px);
+    }
+
+    .card h3 {
+      font-family: Syne, system-ui, sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.85rem;
+      filter: grayscale(0.2);
+    }
+
+    .cta-section {
+      text-align: center;
+      padding-bottom: 6rem;
+    }
+
+    .cta-section .section-title {
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      padding: 2rem 1.5rem 3rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .eyebrow,
+      h1,
+      .hero-lede,
+      .cta-row {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      .scroll-cue {
+        animation: none;
+      }
+
+      .parallax-layer,
+      .feature-visual img {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="hero-wrap" aria-label="Hero">
+    <div class="parallax-stack" aria-hidden="true">
+      <div class="parallax-layer parallax-layer--far" data-parallax="0.22"></div>
+      <div class="parallax-layer parallax-layer--mid" data-parallax="0.12"></div>
+      <div class="parallax-layer parallax-layer--grid" data-parallax="0.06"></div>
+    </div>
+    <div class="hero-gradient" aria-hidden="true"></div>
+    <div class="hero-inner" id="main">
+      <p class="eyebrow">Cursor Bridge</p>
+      <h1>Your IDE agent, in your pocket</h1>
+      <p class="hero-lede">
+        Send a message from WhatsApp. Branch-aware flows, Cursor CLI runs, and streamed replies meet you in the dashboard—so you can steer real work without opening the laptop first.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn--primary" href="/">Open dashboard</a>
+        <a class="btn btn--ghost" href="#how-it-works">How it works</a>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll</span>
+      <span></span>
+    </div>
+  </header>
+
+  <section class="feature-band" id="how-it-works" aria-labelledby="features-heading">
+    <h2 class="section-title" id="features-heading">Built for async, serious builds</h2>
+    <p class="section-sub">
+      One Node process ties WhatsApp, JWT auth, SSE chat, and sandbox previews together—so context stays coherent across channels.
+    </p>
+    <div class="feature-visual" aria-hidden="true">
+      <img
+        src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80&auto=format&fit=crop"
+        alt=""
+        width="1600"
+        height="686"
+        loading="lazy"
+        decoding="async"
+        data-parallax="0.08"
+      />
+    </div>
+    <div class="grid-3">
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">📱</div>
+        <h3>WhatsApp in, structured out</h3>
+        <p>Session keys per channel keep conversations isolated while the same agent stack powers web and mobile-style threads.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">⚡</div>
+        <h3>Streamed responses</h3>
+        <p>Long runs do not block the UI: SSE and cancellation keep the loop tight when plans change mid-flight.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🧩</div>
+        <h3>Preview &amp; git-aware</h3>
+        <p>Feature branches, file trees, and preview runners sit next to chat—so you validate what the agent actually shipped.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <h2 class="section-title" id="cta-heading">Ship the next message</h2>
+    <p class="section-sub">Authenticate once, then treat your phone like a remote control for the repo you care about.</p>
+    <div class="cta-row" style="opacity: 1; animation: none">
+      <a class="btn btn--primary" href="/">Get started</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>Cursor Bridge — bridge between messaging and your development environment. Assets loaded from Unsplash &amp; Google Fonts.</p>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduce) {
+        return;
+      }
+
+      var layers = document.querySelectorAll("[data-parallax]");
+      if (!layers.length) {
+        return;
+      }
+
+      var ticking = false;
+
+      function update() {
+        var y = window.scrollY || window.pageYOffset;
+        for (var i = 0; i < layers.length; i++) {
+          var el = layers[i];
+          var rate = parseFloat(el.getAttribute("data-parallax") || "0", 10);
+          if (el.classList.contains("parallax-layer")) {
+            el.style.transform = "translate3d(0, " + y * rate + "px, 0)";
+          } else {
+            el.style.transform = "translate3d(0, " + y * rate + "px, 0) scale(1.04)";
+          }
+        }
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>

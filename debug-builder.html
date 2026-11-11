@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProjectBuilder Debug</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #1e1e1e;
+      color: #ccc;
+    }
+    h1 { color: #fff; }
+    .section { 
+      margin: 20px 0; 
+      padding: 20px;
+      background: #2d2d2d;
+      border-radius: 8px;
+    }
+    .good { color: #4ec9b0; }
+    .warn { color: #dcdcaa; }
+    .error { color: #f48771; }
+    pre {
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+    button {
+      background: #0e639c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #1177bb;
+    }
+  </style>
+</head>
+<body>
+  <h1>ProjectBuilder Component Debugger</h1>
+  
+  <div class="section">
+    <h2>Instructions</h2>
+    <ol>
+      <li>Open <code>http://localhost:5174/</code> in another tab</li>
+      <li>Log in (if needed)</li>
+      <li>Navigate to the Project Builder (New Project view)</li>
+      <li>Open browser DevTools Console (F12)</li>
+      <li>Copy and paste the script below into the console</li>
+      <li>Run the checks and report results back</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>Debug Script</h2>
+    <button onclick="copyScript()">Copy to Clipboard</button>
+    <pre id="script">// ProjectBuilder Debug Script
+(function() {
+  console.clear();
+  console.log('%c=== ProjectBuilder Debug ===', 'font-size: 16px; font-weight: bold; color: #4ec9b0');
+  
+  // 1. Check if React DevTools is available
+  const hasReactDevTools = typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined';
+  console.log('1. React DevTools:', hasReactDevTools ? '✓' : '✗');
+  
+  // 2. Find React root
+  const root = document.querySelector('#root');
+  console.log('2. Root element:', root ? '✓' : '✗');
+  
+  // 3. Check for ProjectBuilder elements
+  const builderRoot = document.querySelector('.project-builder');
+  console.log('3. ProjectBuilder root:', builderRoot ? '✓' : '✗');
+  
+  if (!builderRoot) {
+    console.log('%c⚠ ProjectBuilder not mounted. Are you on the New Project page?', 'color: #dcdcaa');
+    console.log('   Current URL hash:', window.location.hash);
+    return;
+  }
+  
+  // 4. Check sidebar
+  const sidebar = document.querySelector('.builder-sidebar');
+  console.log('4. Sidebar element:', sidebar ? '✓' : '✗');
+  
+  if (sidebar) {
+    const inner = sidebar.querySelector('.builder-sidebar-inner');
+    console.log('   - Inner container:', inner ? '✓' : '✗');
+    
+    const categories = sidebar.querySelectorAll('.builder-category');
+    console.log('   - Categories found:', categories.length);
+    
+    if (categories.length === 0) {
+      console.log('%c⚠ No categories rendered!', 'color: #f48771; font-weight: bold');
+      console.log('   Sidebar HTML:', sidebar.innerHTML.substring(0, 200));
+    } else {
+      categories.forEach((cat, i) => {
+        const title = cat.querySelector('.builder-category-title');
+        const options = cat.querySelectorAll('.builder-option');
+        const isCollapsed = cat.classList.contains('builder-category--collapsed');
+        console.log(`   - Category ${i + 1}:`, title?.textContent?.trim(), 
+                    `[${options.length} options, ${isCollapsed ? 'collapsed' : 'expanded'}]`);
+      });
+    }
+    
+    // Check first option
+    const firstOption = sidebar.querySelector('.builder-option');
+    if (firstOption) {
+      console.log('   - First option text:', firstOption.textContent?.trim()?.substring(0, 50));
+      const icon = firstOption.querySelector('.builder-option-icon');
+      console.log('   - Has icon:', icon ? '✓' : '✗');
+    }
+  }
+  
+  // 5. Check for React component state (try to access via React DevTools)
+  if (hasReactDevTools) {
+    const fiberNode = root?._reactRootContainer?._internalRoot?.current;
+    console.log('5. React Fiber node:', fiberNode ? '✓' : '✗');
+  }
+  
+  // 6. Check localStorage
+  const draft = localStorage.getItem('project-builder-draft');
+  console.log('6. LocalStorage draft:', draft ? '✓ (exists)' : '✗ (empty)');
+  if (draft) {
+    try {
+      const parsed = JSON.parse(draft);
+      console.log('   - Draft data:', parsed);
+    } catch (e) {
+      console.log('   - Draft parse error:', e.message);
+    }
+  }
+  
+  // 7. Check URL hash
+  console.log('7. URL hash:', window.location.hash || '(empty)');
+  
+  // 8. Check for React errors
+  const errors = window.__REACT_ERROR_OVERLAY_GLOBAL_HOOK__?.errors;
+  console.log('8. React errors:', errors?.length || 0);
+  if (errors?.length > 0) {
+    console.log('%c   Errors:', 'color: #f48771', errors);
+  }
+  
+  // 9. Check for console errors
+  console.log('9. Check browser console above for any errors marked in red');
+  
+  // 10. Export component props (attempt)
+  console.log('\n%c=== Component State Check ===', 'font-size: 14px; font-weight: bold; color: #4ec9b0');
+  console.log('To inspect component state:');
+  console.log('1. Install React DevTools extension if not installed');
+  console.log('2. Click "Components" tab in DevTools');
+  console.log('3. Find "ProjectBuilder" component');
+  console.log('4. Check "selections" and "categories" props');
+  
+  // 11. Try to log React component props directly
+  if (builderRoot) {
+    const reactKey = Object.keys(builderRoot).find(key => key.startsWith('__reactFiber'));
+    if (reactKey) {
+      let fiber = builderRoot[reactKey];
+      // Walk up to find ProjectBuilder
+      let foundBuilder = null;
+      for (let i = 0; i < 20 && fiber; i++) {
+        if (fiber.type?.name === 'ProjectBuilder' || fiber.elementType?.name === 'ProjectBuilder') {
+          foundBuilder = fiber;
+          break;
+        }
+        fiber = fiber.return;
+      }
+      
+      if (foundBuilder) {
+        console.log('\n%c✓ Found ProjectBuilder component!', 'color: #4ec9b0; font-weight: bold');
+        const props = foundBuilder.memoizedProps;
+        const state = foundBuilder.memoizedState;
+        
+        // Extract selections from useState
+        let selections = null;
+        if (state && typeof state === 'object') {
+          // useState stores state in a linked list via memoizedState
+          selections = state.memoizedState;
+        }
+        
+        console.log('Props:', props);
+        console.log('Selections:', selections);
+        
+        // Try to get categories from children
+        if (foundBuilder.child) {
+          let child = foundBuilder.child;
+          for (let i = 0; i < 10 && child; i++) {
+            if (child.type?.name === 'FeatureSidebar') {
+              console.log('FeatureSidebar props:', child.memoizedProps);
+              console.log('  - categories:', child.memoizedProps?.categories?.length || 0);
+              console.log('  - selections:', child.memoizedProps?.selections);
+              break;
+            }
+            child = child.sibling || child.child;
+          }
+        }
+      } else {
+        console.log('%c⚠ Could not find ProjectBuilder in React tree', 'color: #dcdcaa');
+      }
+    }
+  }
+  
+  console.log('\n%c=== Debug Complete ===', 'font-size: 16px; font-weight: bold; color: #4ec9b0');
+  console.log('Please copy this entire console output and report back.');
+})();</pre>
+  </div>
+
+  <div class="section">
+    <h2>Quick Checks</h2>
+    <p>If you can't run the script, at least check these manually:</p>
+    <ul>
+      <li>Does the page show "New Project" header? <input type="checkbox"></li>
+      <li>Do you see the left sidebar at all (even if empty)? <input type="checkbox"></li>
+      <li>Is the sidebar completely gray/blank? <input type="checkbox"></li>
+      <li>Any red errors in browser console (F12)? <input type="checkbox"></li>
+      <li>Right-click the empty sidebar → Inspect Element → What element is it?</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Expected Result</h2>
+    <p>The left sidebar should show these categories with options:</p>
+    <ul style="column-count: 2; column-gap: 20px;">
+      <li><strong>Framework</strong> - React, Next.js, Vue, etc.</li>
+      <li><strong>Backend</strong> - Node Express, Supabase, etc.</li>
+      <li><strong>Database</strong> - PostgreSQL, SQLite, etc.</li>
+      <li><strong>Styling</strong> - Tailwind CSS, CSS Modules, etc.</li>
+      <li><strong>UI Library</strong> - shadcn/ui, Material UI, etc.</li>
+      <li><strong>Auth</strong> - Clerk, Better Auth, etc.</li>
+      <li><strong>Deploy</strong> - Vercel, Cloudflare, etc.</li>
+      <li><strong>Package manager</strong> - npm, pnpm, yarn</li>
+      <li><strong>CMS</strong> - Strapi, None</li>
+      <li><strong>Tools</strong> - Storybook, i18n, Sentry</li>
+    </ul>
+  </div>
+
+  <script>
+    function copyScript() {
+      const script = document.getElementById('script').textContent;
+      navigator.clipboard.writeText(script).then(() => {
+        alert('Script copied to clipboard! Paste it in the browser console on localhost:5174');
+      }).catch(err => {
+        alert('Failed to copy. Please select and copy manually.');
+      });
+    }
+  </script>
+</body>
+</html>

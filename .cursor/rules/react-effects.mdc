@@ -1,0 +1,10 @@
+---
+description: "Apply React 'You Might Not Need an Effect' patterns when writing or refactoring React components, especially useEffect usage. Use when adding useEffect, syncing state from props, or deriving state."
+alwaysApply: false
+---
+
+Use when writing or refactoring React components, especially `useEffect` usage.
+
+Read and apply the skill: [.cursor/skills/react-effects-patterns/SKILL.md](.cursor/skills/react-effects-patterns/SKILL.md).
+
+Reference: [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect).

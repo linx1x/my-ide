@@ -1,0 +1,20 @@
+# Smoke config — runs without API keys (echo provider).
+# For LLM-backed regression, point `providers` at your gateway and set keys in env.
+description: My IDE agent eval placeholders
+
+prompts:
+  - '{{message}}'
+
+providers:
+  - echo
+
+defaultTest:
+  options:
+    provider: echo
+
+tests:
+  - vars:
+      message: 'fixture-message'
+    assert:
+      - type: contains
+        value: 'fixture-message'

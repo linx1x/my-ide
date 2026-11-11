@@ -1,0 +1,142 @@
+body[data-theme="vs-dark"] {
+  --bg: #1e1e1e;
+  --bg-dark: #181818;
+  --surface: #252526;
+  --surface-light: #2d2d2d;
+  --border: #3c3c3c;
+  --text: #d4d4d4;
+  --text-bright: #ffffff;
+  --muted: #858585;
+  --accent: #0e639c;
+  --accent-hover: #1177bb;
+  --accent-focus: rgba(14, 99, 156, 0.4);
+  --terminal-bg: #1e1e1e;
+  --font-ui: "Segoe UI", "Cascadia Code", system-ui, sans-serif;
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: var(--border);
+  --scrollbar-thumb-hover: var(--muted);
+  --scrollbar-radius: 4px;
+  --search-match-bg: #5a4a1a;
+  --search-match-fg: #e6c547;
+}
+
+/* --- VS Dark: chat uses theme vars (inherited) --- */
+body[data-theme="vs-dark"] .chat-message--user .chat-message__bubble {
+  background: rgba(14, 99, 156, 0.15);
+  border-color: rgba(14, 99, 156, 0.4);
+}
+
+body[data-theme="vs"] {
+  --bg: #ffffff;
+  --bg-dark: #f3f3f3;
+  --surface: #ffffff;
+  --surface-light: #f3f3f3;
+  --border: #e5e5e5;
+  --text: #333333;
+  --text-bright: #000000;
+  --muted: #6e6e6e;
+  --accent: #006ab1;
+  --accent-hover: #007acc;
+  --accent-focus: rgba(0, 106, 177, 0.4);
+  --success: #16825d;
+  --success-bg: #2ea04333;
+  --error: #e51400;
+  --error-bg: #e5140022;
+  --warning: #bf8803;
+  --activity-bg: #2c2c2c;
+  --terminal-bg: #f3f3f3;
+  --font-ui: "Segoe UI", "Cascadia Code", system-ui, sans-serif;
+  --scrollbar-track: var(--surface);
+  --scrollbar-thumb: #c5c5c5;
+  --scrollbar-thumb-hover: var(--muted);
+  --scrollbar-radius: 4px;
+  --search-match-bg: #e8c547;
+  --search-match-fg: #1a1a0a;
+}
+
+/* --- VS Light: chat (light blue user, light gray agent) --- */
+body[data-theme="vs"] .chat-message--user .chat-message__bubble {
+  background: rgba(0, 106, 177, 0.12);
+  border-color: rgba(0, 106, 177, 0.35);
+  color: var(--text-bright);
+}
+body[data-theme="vs"] .chat-message--agent .chat-message__bubble {
+  background: var(--surface-light);
+  border-color: var(--border);
+  border-left-color: var(--accent);
+  color: var(--text);
+}
+
+body[data-theme="hc-black"] {
+  --bg: #000000;
+  --bg-dark: #000000;
+  --surface: #000000;
+  --surface-light: #1a1a1a;
+  --border: #ffffff;
+  --text: #ffffff;
+  --text-bright: #ffffff;
+  --muted: #cccccc;
+  --accent: #4fc1ff;
+  --accent-hover: #75bfff;
+  --accent-focus: rgba(79, 193, 255, 0.5);
+  --success: #4ec9b0;
+  --error: #f44747;
+  --warning: #cca700;
+  --activity-bg: #000000;
+  --terminal-bg: #000000;
+  --font-ui: system-ui, sans-serif;
+  --scrollbar-track: #000000;
+  --scrollbar-thumb: #ffffff;
+  --scrollbar-thumb-hover: #cccccc;
+  --scrollbar-radius: 0;
+}
+
+/* --- HC Black: chat (high contrast borders, clear focus) --- */
+body[data-theme="hc-black"] .chat-message__bubble {
+  border-width: 2px;
+  border-color: var(--border);
+}
+body[data-theme="hc-black"] .chat-message--agent .chat-message__bubble {
+  border-left-width: 4px;
+  border-left-color: var(--accent);
+}
+body[data-theme="hc-black"] .chat-message__actions .msg-expand-btn:focus-visible,
+body[data-theme="hc-black"] .chat-scroll-to-bottom:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* --- VS Dark / VS Light: create-app flow & stack choice cards (VS Code feel) --- */
+
+/* VS Dark: slightly elevated cards */
+body[data-theme="vs-dark"] .chat-create-app-card {
+  border-left-color: rgba(14, 99, 156, 0.6);
+}
+body[data-theme="vs-dark"] .chat-create-app-card:hover {
+  border-left-color: var(--accent);
+  box-shadow: 0 2px 10px rgba(14, 99, 156, 0.2);
+}
+body[data-theme="vs-dark"] .stack-choice-card {
+  border-left: 2px solid rgba(14, 99, 156, 0.5);
+}
+body[data-theme="vs-dark"] .stack-choice-card:hover {
+  border-left-color: var(--accent);
+  box-shadow: 0 3px 14px rgba(14, 99, 156, 0.18);
+}
+
+/* VS Light: clean, elevated */
+body[data-theme="vs"] .chat-create-app-card {
+  border-left: 2px solid rgba(0, 106, 177, 0.4);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+body[data-theme="vs"] .chat-create-app-card:hover {
+  border-left-color: var(--accent);
+  box-shadow: 0 3px 14px rgba(0, 106, 177, 0.14), 0 1px 4px rgba(0,0,0,0.06);
+}
+body[data-theme="vs"] .stack-choice-card {
+  border-left: 2px solid rgba(0, 106, 177, 0.35);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+body[data-theme="vs"] .stack-choice-card:hover {
+  border-left-color: var(--accent);
+  box-shadow: 0 3px 14px rgba(0, 106, 177, 0.14), 0 1px 4px rgba(0,0,0,0.05);
+}

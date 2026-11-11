@@ -1,0 +1,25 @@
+---
+description: My IDE reply format for WhatsApp / mobile — concise summaries and screenshots
+alwaysApply: true
+---
+
+# My IDE Reply Format (WhatsApp / mobile)
+
+When the output goes to WhatsApp (bridge context), format replies for mobile readability:
+
+## Created/Modified Files
+
+- **Do not** paste full file contents in your reply.
+- **Do** provide a brief summary for each file:
+  - `path/to/file.js` — 1–2 line description of what it does
+  - `styles.css` — what styles/components it defines
+- List files first, then add a short overall summary if helpful.
+
+## Design / Frontend Changes
+
+When you create or modify HTML, CSS, or UI components:
+
+1. **Output exactly this line** (plain text, no markdown): `SCREENSHOT: path/to/file.html`
+2. Put it on its own line. The bridge automatically captures it and sends the image—no explanation needed.
+3. Do not tell the user to "open in browser" or that "the bridge can use that path." The bridge handles it.
+4. Keep your text reply concise—briefly describe the change. The screenshot is sent separately.

@@ -1,0 +1,265 @@
+/* ─── Living Canvas theme: void + luminous particles ─── */
+body[data-theme="living-canvas"] {
+  --bg: #050508;
+  --bg-dark: #000000;
+  --void-base: #050508;
+  --surface: rgba(10, 10, 16, 0.8);
+  --surface-light: rgba(15, 15, 24, 0.85);
+  --border: rgba(255, 255, 255, 0.06);
+  --text: #EDEDEF;
+  --text-bright: #EDEDEF;
+  --muted: #8A8F98;
+  --accent: #648CFF;
+  --accent-hover: #7DA0FF;
+  --accent-focus: rgba(100, 140, 255, 0.4);
+  --success: #34D399;
+  --error: #ef4444;
+  --warning: #F59E0B;
+  --activity-bg: rgba(10, 10, 16, 0.6);
+  --terminal-bg: #050508;
+  --radius: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --scrollbar-track: #050508;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.12);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+  --card-glow: rgba(100, 140, 255, 0.15);
+  --font-ui: "Inter", "Geist Sans", system-ui, sans-serif;
+}
+
+body[data-theme="living-canvas"] {
+  background: #050508;
+}
+
+body[data-theme="living-canvas"] .ide-layout.tactical-app {
+  background: transparent;
+}
+
+body[data-theme="living-canvas"] .ide-layout .workspace-shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* Living Canvas backdrop: canvas + vignette + noise */
+.living-canvas-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.living-canvas-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.living-canvas-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 70%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  pointer-events: none;
+}
+
+.living-canvas-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Living Canvas panels: glass over void */
+body[data-theme="living-canvas"] .activity-bar,
+body[data-theme="living-canvas"] .sidebar,
+body[data-theme="living-canvas"] .status-bar,
+body[data-theme="living-canvas"] .tab-bar,
+body[data-theme="living-canvas"] .editor-header {
+  background: rgba(10, 10, 16, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Editor region: more transparent so the canvas extends visibly into the editor */
+body[data-theme="living-canvas"] .main-content,
+body[data-theme="living-canvas"] .editor-area,
+body[data-theme="living-canvas"] .editor-container {
+  background: rgba(10, 10, 16, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 0 24px rgba(0, 0, 0, 0.2);
+}
+
+body[data-theme="living-canvas"] .terminal-panel {
+  background: var(--terminal-bg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: none;
+  border-radius: 0;
+}
+
+body[data-theme="living-canvas"] .sidebar-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body[data-theme="living-canvas"] .tab-bar,
+body[data-theme="living-canvas"] .status-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+body[data-theme="living-canvas"] .sidebar-body,
+body[data-theme="living-canvas"] .chat-panel-body,
+body[data-theme="living-canvas"] .settings-panel {
+  background: transparent;
+}
+
+/* --- Living Canvas: chat (transparent, soft borders, accent labels) --- */
+body[data-theme="living-canvas"] .chat-message__bubble {
+  background: rgba(10, 10, 16, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+body[data-theme="living-canvas"] .chat-message--user .chat-message__bubble {
+  background: rgba(100, 140, 255, 0.15);
+  border-color: rgba(100, 140, 255, 0.25);
+}
+body[data-theme="living-canvas"] .chat-message--agent .chat-message__bubble {
+  border-left-color: var(--accent);
+}
+body[data-theme="living-canvas"] .chat-message__label {
+  color: var(--muted);
+}
+body[data-theme="living-canvas"] .chat-suggestion {
+  background: rgba(10, 10, 16, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+body[data-theme="living-canvas"] .chat-suggestion:hover {
+  border-color: var(--accent);
+  background: rgba(100, 140, 255, 0.12);
+}
+body[data-theme="living-canvas"] .chat-scroll-to-bottom {
+  background: rgba(10, 10, 16, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+/* Living Canvas theme cards / buttons hover glow */
+body[data-theme="living-canvas"] .theme-card,
+body[data-theme="living-canvas"] .activity-btn.active,
+body[data-theme="living-canvas"] .activity-btn:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body[data-theme="living-canvas"] .theme-card:hover,
+body[data-theme="living-canvas"] .theme-card.active {
+  border-color: rgba(100, 140, 255, 0.2);
+  box-shadow: 0 0 20px rgba(100, 140, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .living-canvas-canvas {
+    opacity: 0.5;
+  }
+}
+
+/* --- Living Canvas: create-app flow & stack choice cards --- */
+
+/* Step progress: subtle accent pip */
+body[data-theme="living-canvas"] .chat-create-app-step-progress {
+  color: var(--muted);
+}
+body[data-theme="living-canvas"] .chat-create-app-step-progress::before {
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(100, 140, 255, 0.6);
+}
+
+/* Template cards: void surface with accent glow on hover */
+body[data-theme="living-canvas"] .chat-create-app-card {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 2px solid rgba(100, 140, 255, 0.45);
+  border-radius: var(--radius-md, 12px);
+}
+body[data-theme="living-canvas"] .chat-create-app-card::after {
+  background: linear-gradient(135deg, rgba(100, 140, 255, 0.07) 0%, transparent 60%);
+}
+body[data-theme="living-canvas"] .chat-create-app-card:hover {
+  border-color: rgba(100, 140, 255, 0.45);
+  border-left-color: var(--accent);
+  background: rgba(15, 15, 24, 0.9);
+  box-shadow: 0 0 0 1px rgba(100, 140, 255, 0.2), 0 4px 20px rgba(100, 140, 255, 0.12);
+}
+body[data-theme="living-canvas"] .chat-create-app-card-label {
+  color: var(--text-bright);
+}
+
+/* Option buttons */
+body[data-theme="living-canvas"] .chat-create-app-opt {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+body[data-theme="living-canvas"] .chat-create-app-opt:hover {
+  border-color: rgba(100, 140, 255, 0.4);
+  background: rgba(100, 140, 255, 0.05);
+}
+body[data-theme="living-canvas"] .chat-create-app-opt.selected {
+  border-color: var(--accent);
+  background: rgba(100, 140, 255, 0.1);
+  box-shadow: 0 0 0 1px rgba(100, 140, 255, 0.3), 0 0 8px rgba(100, 140, 255, 0.1);
+}
+body[data-theme="living-canvas"] .chat-create-app-opt-letter {
+  background: rgba(100, 140, 255, 0.1);
+  color: var(--muted);
+}
+body[data-theme="living-canvas"] .chat-create-app-opt.selected .chat-create-app-opt-letter {
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(100, 140, 255, 0.4);
+}
+
+/* Buttons */
+body[data-theme="living-canvas"] .chat-create-app-btn {
+  box-shadow: 0 2px 12px rgba(100, 140, 255, 0.25);
+}
+body[data-theme="living-canvas"] .chat-create-app-btn:hover:not(:disabled) {
+  box-shadow: 0 4px 20px rgba(100, 140, 255, 0.4);
+}
+
+/* Stack choice cards */
+body[data-theme="living-canvas"] .stack-choice-card {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 2px solid rgba(100, 140, 255, 0.4);
+}
+body[data-theme="living-canvas"] .stack-choice-card::after {
+  background: linear-gradient(135deg, rgba(100, 140, 255, 0.07) 0%, transparent 60%);
+}
+body[data-theme="living-canvas"] .stack-choice-card:hover {
+  border-color: rgba(100, 140, 255, 0.4);
+  background: rgba(15, 15, 24, 0.9);
+  box-shadow: 0 0 0 1px rgba(100, 140, 255, 0.2), 0 4px 24px rgba(100, 140, 255, 0.12);
+}
+body[data-theme="living-canvas"] .stack-choice-card.selected {
+  border-color: var(--accent);
+  background: rgba(100, 140, 255, 0.1);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 20px rgba(100, 140, 255, 0.2);
+}
+body[data-theme="living-canvas"] .stack-choice-icon {
+  background: rgba(100, 140, 255, 0.1);
+  border: 1px solid rgba(100, 140, 255, 0.15);
+}
+body[data-theme="living-canvas"] .stack-choice-card:hover .stack-choice-icon {
+  box-shadow: 0 0 8px rgba(100, 140, 255, 0.25);
+}
+body[data-theme="living-canvas"] .stack-choice-recommended {
+  background: rgba(100, 140, 255, 0.12);
+  border-color: rgba(100, 140, 255, 0.25);
+}

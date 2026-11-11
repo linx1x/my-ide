@@ -1,0 +1,14 @@
+---
+description: Prioritize tools and skills over agentic delegation to minimize token usage
+alwaysApply: true
+---
+
+# Token-Efficient Tool & Skill Usage
+
+- **Prefer direct tool calls** (Grep, Read, Glob, SemanticSearch, etc.) over launching subagents (mcp_task).
+- **Use skills** when their description matches the task—read and apply them directly.
+- **Only use mcp_task** for broad codebase exploration or complex multi-step tasks that clearly require autonomous subagents.
+- **For narrow/specific questions** (e.g., "Where is X?", "What does Y do?"), use tools directly instead of mcp_task.
+- **Batch independent tool calls** in parallel when possible.
+- Keep rules and context minimal; use glob-scoped rules where appropriate instead of always-apply.
+- Bridge token options: orchestrator context flush (sessionId null per step), single-agent session cap (CURSOR_SESSION_MAX_TURNS), scaffold short context (SCAFFOLD_SHORT_CONTEXT=1), MCP scope (CURSOR_MCP_SCOPE=minimal|auto|full). See .env.example and .cursor/memory.md.

@@ -1,0 +1,16 @@
+# Copy this to your .cloudflared folder as config.yml
+# Windows: %USERPROFILE%\.cloudflared\config.yml
+#
+# Then run (--config must come before "run"):
+#   cloudflared tunnel --config "%USERPROFILE%\.cloudflared\config.yml" run
+# Or with default path (if config.yml is already in .cloudflared):
+#   cloudflared tunnel run
+
+tunnel: your-tunnel-id
+# Use full path so it works no matter where you run cloudflared from (or use just the filename if config.yml is in the same folder as the .json)
+credentials-file: C:\Users\<you>\.cloudflared\your-tunnel-id.json
+
+ingress:
+  - hostname: dashboard.example.com
+    service: http://localhost:3847
+  - service: http_status:404

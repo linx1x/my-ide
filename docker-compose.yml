@@ -1,0 +1,153 @@
+# My IDE — one command: docker compose up
+# Runs bridge (hot reload), Vite dashboard, n8n, and LangFuse. Tunnel is optional (profile or run locally).
+# LangFuse UI: open http://localhost:3847/langfuse/ after first run.
+#
+# Uses the project .env file (same folder as docker-compose.yml) as config. Create it from .env.example.
+# First run: add ALLOWED_NUMBERS to .env; QR code appears in bridge logs.
+#
+# Tunnel: runs with docker compose up. Set TUNNEL_ID + CLOUDFLARE_CREDENTIALS_DIR (local tunnel) or CLOUDFLARE_TUNNEL_TOKEN.
+# Or run cloudflared locally: cloudflared tunnel --config "%USERPROFILE%\.cloudflared\config.yml" run
+#   - With token: set CLOUDFLARE_TUNNEL_TOKEN in .env.
+#   - Classic (deprecated): set TUNNEL_ID and CLOUDFLARE_CREDENTIALS_DIR.
+# Set CUSTOM_DOMAIN=dashboard.example.com (or DASHBOARD_BASE_URL) for CORS.
+
+services:
+  bridge:
+    build: .
+    image: my-ide:latest
+    container_name: my-ide-bridge
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_PORT:-3847}:${DASHBOARD_PORT:-3847}"
+    volumes:
+      - bridge-data:/data
+      - ./.env:/data/.env
+      - ./workspace:/workspace
+      - .:/app
+      - bridge_node_modules:/app/node_modules
+      - bridge_client_node_modules:/app/src/dashboard/client/node_modules
+    environment:
+      - DOCKER=1
+      - DOCKER_DATA_DIR=/data
+      - DOTENV_CONFIG_PATH=/data/.env
+      - DASHBOARD_ENABLED=1
+      - N8N_ENABLED=1
+      - N8N_INTERNAL_URL=http://n8n:5678
+      - LANGFUSE_UI_ENABLED=1
+      - LANGFUSE_UI_INTERNAL_URL=http://langfuse:3000
+    depends_on:
+      n8n:
+        condition: service_started
+      langfuse:
+        condition: service_started
+    command: ["tsx", "watch", "src/index.ts"]
+
+  dashboard:
+    image: my-ide:latest
+    container_name: my-ide-dashboard
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - bridge_node_modules:/app/node_modules
+      - bridge_client_node_modules:/app/src/dashboard/client/node_modules
+    environment:
+      - VITE_PROXY_TARGET=http://bridge:${DASHBOARD_PORT:-3847}
+      - VITE_ALLOWED_HOSTS=${CUSTOM_DOMAIN:-}
+    depends_on:
+      - bridge
+    entrypoint: ["npm", "run", "dev:dashboard"]
+    working_dir: /app
+
+  n8n:
+    image: n8nio/n8n
+    container_name: my-ide-n8n
+    restart: unless-stopped
+    # Dedicated port so the dashboard (DASHBOARD_PORT on host) and n8n never fight for the same bind.
+    # npm start + docker compose up n8n: set N8N_INTERNAL_URL=http://127.0.0.1:5678 in .env.
+    ports:
+      - "${N8N_PUBLISH_PORT:-5678}:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      # Must match how you open n8n in the browser (Origin check). Default = dashboard proxy /n8n/.
+      # npm start + only this service + http://localhost:5678 in the browser → set in .env:
+      #   N8N_EDITOR_BASE_URL=http://localhost:5678/  and  WEBHOOK_URL=http://localhost:5678/
+      # or open http://localhost:${DASHBOARD_PORT:-3847}/n8n/ instead (no .env change).
+      - N8N_EDITOR_BASE_URL=${N8N_EDITOR_BASE_URL:-http://localhost:${DASHBOARD_PORT:-3847}/n8n/}
+      - WEBHOOK_URL=${WEBHOOK_URL:-http://localhost:${DASHBOARD_PORT:-3847}/n8n/}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - N8N_PROXY_HOPS=1
+      - N8N_DIAGNOSTICS_ENABLED=false
+
+  # ── LangFuse observability stack ────────────────────────────────────────────
+  # ── LangFuse v2 — Postgres-only, no ClickHouse/Redis needed ─────────────────
+  langfuse:
+    image: langfuse/langfuse:2
+    container_name: my-ide-langfuse
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      langfuse-db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
+      # When accessed via tunnel at /langfuse, set LANGFUSE_NEXTAUTH_URL=https://your-domain.com/langfuse
+      - NEXTAUTH_URL=${LANGFUSE_NEXTAUTH_URL:-http://localhost:3000}
+      # Secrets — generate with: openssl rand -base64 32
+      - NEXTAUTH_SECRET=${LANGFUSE_NEXTAUTH_SECRET:-my-ide-langfuse-dev-nextauth-secret-2025}
+      - SALT=${LANGFUSE_SALT:-my-ide-langfuse-dev-salt-value-2025-local}
+      - TELEMETRY_ENABLED=false
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/api/public/health', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))\""]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+
+  langfuse-db:
+    image: postgres:16-alpine
+    container_name: my-ide-langfuse-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=langfuse
+      - POSTGRES_PASSWORD=langfuse
+      - POSTGRES_DB=langfuse
+    volumes:
+      - langfuse_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langfuse"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cloudflared:
+    build:
+      context: docker/cloudflared
+      dockerfile: Dockerfile
+    image: my-ide-cloudflared:latest
+    container_name: my-ide-tunnel
+    restart: unless-stopped
+    depends_on:
+      - bridge
+    environment:
+      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:-}
+      - TUNNEL_ID=${TUNNEL_ID:-}
+      - TUNNEL_HOSTNAME=${TUNNEL_HOSTNAME:-dashboard.example.com}
+      - DASHBOARD_PORT=${DASHBOARD_PORT:-3847}
+    volumes:
+      # Mount host .cloudflared so container can use your tunnel credentials (for local tunnel)
+      - ${CLOUDFLARE_CREDENTIALS_DIR:-${USERPROFILE:-$HOME}/.cloudflared}:/etc/cloudflared/credentials:ro
+
+volumes:
+  bridge-data:
+  n8n_data:
+  bridge_node_modules:
+  bridge_client_node_modules:
+  langfuse_db_data:

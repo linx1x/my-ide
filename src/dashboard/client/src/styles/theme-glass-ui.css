@@ -1,0 +1,557 @@
+/* ─── Glass panel system: main surfaces ─── */
+body[data-theme="glass"] .activity-bar,
+body[data-theme="glass"] .sidebar,
+body[data-theme="glass"] .main-content,
+body[data-theme="glass"] .editor-area,
+body[data-theme="glass"] .editor-container,
+body[data-theme="glass"] .status-bar,
+body[data-theme="glass"] .tab-bar,
+body[data-theme="glass"] .editor-header {
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px rgba(99, 102, 241, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  body[data-theme="glass"] .activity-bar,
+  body[data-theme="glass"] .sidebar,
+  body[data-theme="glass"] .main-content,
+  body[data-theme="glass"] .editor-area,
+  body[data-theme="glass"] .editor-container,
+  body[data-theme="glass"] .status-bar,
+  body[data-theme="glass"] .tab-bar,
+  body[data-theme="glass"] .editor-header {
+    background: rgba(255, 255, 255, 0.88);
+  }
+}
+
+body[data-theme="glass"] .activity-bar {
+  background: var(--surface-glass-heavy);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+}
+
+/* Top icon strip: no glass container — icons only */
+body[data-theme="glass"] .activity-bar.activity-bar--top.activity-bar--icons-only {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body[data-theme="glass"] .activity-bar.activity-bar--icons-only .activity-top-nav__float {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body[data-theme="glass"] .activity-bar--top.activity-bar--icons-only .activity-btn:hover,
+body[data-theme="glass"] .activity-bar--top.activity-bar--icons-only .activity-btn:focus-visible,
+body[data-theme="glass"] .activity-bar--top.activity-bar--icons-only .activity-btn-top:hover,
+body[data-theme="glass"] .activity-bar--top.activity-bar--icons-only .activity-btn-top:focus-visible {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body[data-theme="glass"] .activity-bar--top.activity-bar--icons-only .activity-btn.active,
+body[data-theme="glass"] .activity-bar--top.activity-bar--icons-only .activity-btn-top.active {
+  background: transparent !important;
+  border: none !important;
+}
+
+body[data-theme="glass"] .sidebar {
+  background: var(--surface-glass);
+  border-right: 1px solid var(--border-glass);
+  border-left: none;
+}
+body[data-theme="glass"] .sidebar-header {
+  border-bottom-color: var(--border-glass-subtle);
+}
+body[data-theme="glass"] .tab-bar,
+body[data-theme="glass"] .status-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Nested panels: lighter glass */
+body[data-theme="glass"] .sidebar-body,
+body[data-theme="glass"] .chat-panel-body,
+body[data-theme="glass"] .settings-panel {
+  background: transparent;
+}
+
+/* ─── Glass theme: buttons ─── */
+body[data-theme="glass"] .theme-card,
+body[data-theme="glass"] .login-card,
+body[data-theme="glass"] .login-card button,
+body[data-theme="glass"] .chat-form-chatgpt .chat-input-actions button,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-send-btn,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-attach-btn,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-voice-btn,
+body[data-theme="glass"] .command-btn-primary,
+body[data-theme="glass"] .icon-btn,
+body[data-theme="glass"] .activity-bar .activity-btn {
+  transition: background 250ms ease-out, border-color 250ms ease-out, box-shadow 250ms ease-out, transform 200ms ease-out;
+}
+body[data-theme="glass"] .theme-card {
+  background: var(--surface-glass);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid var(--border-glass);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px rgba(99, 102, 241, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+body[data-theme="glass"] .theme-card:hover {
+  background: var(--surface-glass-hover);
+  box-shadow:
+    0 16px 48px rgba(99, 102, 241, 0.18),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+}
+body[data-theme="glass"] .theme-card.active {
+  border-color: var(--border-accent);
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.3),
+    0 8px 32px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+}
+/* Primary button (accent solid) */
+body[data-theme="glass"] .login-card button,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-send-btn,
+body[data-theme="glass"] .command-btn-primary {
+  background: var(--accent) !important;
+  color: var(--foreground-on-accent) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.3),
+    0 4px 16px rgba(99, 102, 241, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25) !important;
+}
+body[data-theme="glass"] .login-card button:hover:not(:disabled),
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-send-btn:hover:not(:disabled),
+body[data-theme="glass"] .command-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover) !important;
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(99, 102, 241, 0.35),
+    0 8px 24px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3) !important;
+}
+body[data-theme="glass"] .login-card button:active:not(:disabled),
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-send-btn:active:not(:disabled),
+body[data-theme="glass"] .command-btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+/* Secondary / glass buttons */
+body[data-theme="glass"] .icon-btn,
+body[data-theme="glass"] .chat-form-chatgpt .chat-input-actions button,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-attach-btn,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-voice-btn,
+body[data-theme="glass"] .activity-bar .activity-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--foreground) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.3) !important;
+}
+body[data-theme="glass"] .icon-btn:hover,
+body[data-theme="glass"] .chat-form-chatgpt .chat-input-actions button:hover:not(:disabled),
+body[data-theme="glass"] .activity-bar .activity-btn:hover {
+  background: var(--surface-glass-hover) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-attach-btn,
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-voice-btn {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-attach-btn:hover:not(:disabled),
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-voice-btn:hover:not(:disabled) {
+  border: none !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+body[data-theme="glass"] .chat-form-chatgpt .chatgpt-send-btn {
+  border: none !important;
+}
+
+body[data-theme="glass"] .activity-bar .activity-btn.active {
+  color: var(--accent) !important;
+  border-left: 2px solid var(--accent);
+}
+
+body[data-theme="glass"] .activity-bar--top .activity-btn.active,
+body[data-theme="glass"] .activity-bar--top .activity-btn-top.active {
+  border-left: none !important;
+  border-bottom: none !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent) !important;
+  background: color-mix(in srgb, var(--accent) 14%, transparent) !important;
+}
+body[data-theme="glass"] .icon-btn:focus-visible,
+body[data-theme="glass"] .activity-bar .activity-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-focus) !important;
+}
+body[data-theme="glass"] .command-btn:not(.command-btn-primary) {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--foreground) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+body[data-theme="glass"] .command-btn:hover:not(:disabled):not(.command-btn-primary) {
+  background: var(--surface-glass-hover) !important;
+}
+body[data-theme="glass"] .chat-view-mode-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+body[data-theme="glass"] .chat-view-mode-btn:hover {
+  background: var(--surface-glass-hover);
+}
+body[data-theme="glass"] .chat-view-mode-btn.active {
+  background: var(--accent);
+  color: var(--foreground-on-accent);
+  border-color: var(--accent);
+}
+
+/* --- Glass: chat (frosted bubbles, soft shadow) --- */
+body[data-theme="glass"] .chat-message__bubble {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+body[data-theme="glass"] .chat-message--user .chat-message__bubble {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+body[data-theme="glass"] .chat-message--agent .chat-message__bubble {
+  background: var(--surface-glass-heavy) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 3px solid var(--accent);
+}
+body[data-theme="glass"] .chat-suggestion {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+body[data-theme="glass"] .chat-scroll-to-bottom {
+  background: var(--surface-glass-heavy) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+/* ─── Glass theme: inputs ─── */
+body[data-theme="glass"] .chat-form-chatgpt .chat-input,
+body[data-theme="glass"] .chat-form textarea,
+body[data-theme="glass"] .chat-form input,
+body[data-theme="glass"] .login-card input,
+body[data-theme="glass"] input[type="text"],
+body[data-theme="glass"] input[type="search"],
+body[data-theme="glass"] input[type="tel"],
+body[data-theme="glass"] textarea {
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px;
+  color: var(--foreground) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+body[data-theme="glass"] .chat-form-chatgpt .chat-input::placeholder,
+body[data-theme="glass"] .chat-form textarea::placeholder,
+body[data-theme="glass"] .login-card input::placeholder {
+  color: var(--foreground-muted);
+}
+body[data-theme="glass"] .chat-form-chatgpt .chat-input:focus,
+body[data-theme="glass"] .chat-form textarea:focus,
+body[data-theme="glass"] .login-card input:focus,
+body[data-theme="glass"] input:focus,
+body[data-theme="glass"] textarea:focus {
+  outline: none;
+  border-color: rgba(99, 102, 241, 0.5) !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+}
+body[data-theme="glass"] .chat-form-chatgpt .chat-input-wrap:focus-within {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+body[data-theme="glass"] .chat-form-chatgpt .chat-input,
+body[data-theme="glass"] .chat-form-chatgpt .chat-input:focus {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: 0;
+}
+
+/* ─── Glass theme: login card ─── */
+body[data-theme="glass"] .login-card {
+  background: var(--surface-glass-heavy) !important;
+  backdrop-filter: blur(var(--glass-blur-xl)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl)) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 24px 80px rgba(99, 102, 241, 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3) !important;
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .login-card h1,
+body[data-theme="glass"] .login-card .sub,
+body[data-theme="glass"] .login-card label {
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .login-card .sub {
+  color: var(--foreground-secondary) !important;
+}
+
+/* ─── Glass theme: typography and welcome ─── */
+body[data-theme="glass"] .welcome-content h2 {
+  background: linear-gradient(90deg, #6366F1, #A855F7, #EC4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+body[data-theme="glass"] .sidebar-title,
+body[data-theme="glass"] .settings-section-title {
+  color: var(--foreground-secondary);
+}
+body[data-theme="glass"] .theme-name {
+  color: var(--foreground);
+}
+
+/* ─── Glass theme: mobile bottom nav ─── */
+body[data-theme="glass"] .bottom-nav {
+  background: var(--surface-glass-heavy);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+  border-top: 1px solid var(--border-glass-subtle);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06);
+}
+body[data-theme="glass"] .bottom-nav-btn {
+  color: var(--foreground-secondary);
+}
+body[data-theme="glass"] .bottom-nav-btn:hover,
+body[data-theme="glass"] .bottom-nav-btn:focus-visible {
+  color: var(--foreground);
+  background: var(--surface-glass-hover);
+}
+
+body[data-theme="glass"] .bottom-nav-btn.is-active,
+body[data-theme="glass"] .bottom-nav-btn.is-active:hover,
+body[data-theme="glass"] .bottom-nav-btn.is-active:focus-visible {
+  background: transparent;
+  color: var(--foreground-secondary);
+}
+
+/* ─── Glass theme: modals ─── */
+body[data-theme="glass"] .project-modal,
+body[data-theme="glass"] .project-modal-content,
+body[data-theme="glass"] .quick-open-box {
+  background: var(--surface-glass-heavy) !important;
+  backdrop-filter: blur(var(--glass-blur-xl)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl)) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 24px 80px rgba(99, 102, 241, 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3) !important;
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .project-modal-tabs button {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--foreground);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+}
+body[data-theme="glass"] .project-modal-tabs button:hover {
+  background: var(--surface-glass-hover);
+}
+body[data-theme="glass"] .project-modal-tabs button.active {
+  background: var(--accent);
+  color: var(--foreground-on-accent);
+  border-color: var(--accent);
+}
+body[data-theme="glass"] .project-modal-actions button[type="submit"] {
+  background: var(--accent) !important;
+  color: var(--foreground-on-accent) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+
+/* ─── Glass theme: terminal panel (matrix-style dedicated theme) ─── */
+body[data-theme="glass"] .terminal-panel {
+  background: rgba(255, 255, 255, 0.14) !important;
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid var(--border-glass);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  box-shadow:
+    0 8px 32px rgba(99, 102, 241, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+body[data-theme="glass"] .terminal-header {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: var(--border-glass-subtle);
+  color: var(--foreground-secondary);
+}
+
+/* ─── Glass theme: welcome screen (not boxy, glass panel + dark text) ─── */
+body[data-theme="glass"] .welcome-screen {
+  background: transparent;
+}
+body[data-theme="glass"] .welcome-content {
+  background: var(--surface-glass) !important;
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid var(--border-glass);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  box-shadow:
+    0 16px 48px rgba(99, 102, 241, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+  color: var(--foreground);
+}
+body[data-theme="glass"] .welcome-content h2 {
+  color: var(--foreground);
+}
+body[data-theme="glass"] .welcome-content p,
+body[data-theme="glass"] .welcome-content .shortcut-list,
+body[data-theme="glass"] .welcome-content .shortcut-list div {
+  color: var(--foreground-secondary);
+}
+body[data-theme="glass"] .welcome-content kbd {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--border-glass);
+  color: var(--foreground);
+}
+
+/* ─── Glass theme: editor header / "Open a file to start editing" (less boxy, dark text) ─── */
+body[data-theme="glass"] .editor-header {
+  border-radius: 0 0 12px 12px;
+  padding: 0 var(--space-2);
+  min-height: 40px;
+}
+body[data-theme="glass"] .editor-path,
+body[data-theme="glass"] .path-breadcrumb,
+body[data-theme="glass"] .path-segment {
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .path-breadcrumb {
+  font-weight: 500;
+}
+
+/* ─── Glass theme: explorer readability (dark text on glass) ─── */
+body[data-theme="glass"] .sidebar .tree-item,
+body[data-theme="glass"] .sidebar .tree-label,
+body[data-theme="glass"] .sidebar .tree-file-icon,
+body[data-theme="glass"] .sidebar .tree-chevron {
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .sidebar .tree-item:hover {
+  background: var(--surface-glass-hover);
+}
+body[data-theme="glass"] .sidebar .tree-item.selected {
+  background: var(--accent-surface);
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .sidebar .tree-item.selected .tree-label,
+body[data-theme="glass"] .sidebar .tree-item.selected .tree-file-icon {
+  color: var(--foreground) !important;
+}
+body[data-theme="glass"] .sidebar-title {
+  color: var(--foreground) !important;
+  font-weight: 600;
+}
+body[data-theme="glass"] .explorer-panel .explorer-toolbar .icon-btn {
+  color: var(--foreground);
+}
+
+/* ─── Glass theme: tab bar and sidebar spacing ─── */
+body[data-theme="glass"] .tab-bar {
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  gap: 4px;
+}
+body[data-theme="glass"] .tab-list {
+  gap: 4px;
+  padding-left: var(--space-1);
+}
+body[data-theme="glass"] .tab-item {
+  height: 36px;
+  padding: 0 14px;
+  min-width: 0;
+  color: var(--foreground-secondary);
+}
+body[data-theme="glass"] .tab-item.active {
+  color: var(--foreground);
+  background: var(--surface-glass-hover);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+body[data-theme="glass"] .sidebar-header {
+  padding: 12px 16px;
+  min-height: 48px;
+}
+body[data-theme="glass"] .sidebar-body {
+  padding: 12px;
+  gap: 8px;
+}
+body[data-theme="glass"] .tree-item {
+  padding: 8px 12px;
+  min-height: 36px;
+}
+body[data-theme="glass"] .file-tree-wrap {
+  padding: 8px 0;
+}
+body[data-theme="glass"] .explorer-panel .explorer-toolbar {
+  gap: 8px;
+  padding: 8px 12px;
+}
+body[data-theme="glass"] .explorer-toolbar-sep {
+  margin: 0 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="glass"] .theme-card:hover,
+  body[data-theme="glass"] .login-card button:hover:not(:disabled),
+  body[data-theme="glass"] .chat-form-chatgpt .chatgpt-send-btn:hover:not(:disabled),
+  body[data-theme="glass"] .command-btn-primary:hover:not(:disabled) {
+    transform: none;
+  }
+}

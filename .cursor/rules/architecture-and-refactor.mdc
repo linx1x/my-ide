@@ -1,0 +1,45 @@
+---
+description: "Apply architecture patterns and refactoring discipline. Use when changing code structure, refactoring, adding layers or modules, or improving code quality (e.g. splitting server.ts, agent-handler.ts, or applying SOLID/DRY)."
+alwaysApply: false
+---
+
+# Architecture and Refactoring
+
+When changing structure, refactoring, or improving code quality, follow these rules. See also the **architecture-patterns** and **code-refactoring** skills in `.cursor/skills/`, and [docs/Project_Architecture_Blueprint.md](docs/Project_Architecture_Blueprint.md).
+
+## Architecture (from architecture-patterns)
+
+- **Dependencies point inward.** Domain and use-case logic must not import Express, Baileys, or other transport/infrastructure. Route handlers and adapters call into agent-handler, orchestrator, and core; not the other way around.
+- **Thin controllers / route handlers.** HTTP handlers in `server.ts` should validate input, call a use-case or service function, and format the response. No business logic in route handlers.
+- **Prefer ports and adapters.** For external I/O (DB, WhatsApp, CLI, HTTP), define interfaces (ports) where practical; implement them in adapters. This keeps the core testable without starting real services.
+- **Avoid business logic in "frameworks & drivers".** Keep session, queue, and agent-dispatch logic in `agent-handler.ts` and `orchestrator.ts`; keep config in `config.ts`; do not put domain rules inside Express route callbacks.
+
+## Refactoring (from code-refactoring)
+
+### Checklist
+
+- [ ] Function does one thing only (SRP).
+- [ ] Function name clearly describes what it does.
+- [ ] Function is ~20 lines or fewer (guideline).
+- [ ] 3 or fewer parameters (or use a parameter object).
+- [ ] No duplicate code (DRY).
+- [ ] if nesting is 2 levels or fewer.
+- [ ] No magic numbers (extract as named constants).
+- [ ] Code is understandable without comments (self-documenting).
+
+### Mandatory
+
+1. **Behavior preservation:** Refactoring must not change observable behavior. Same inputs → same outputs and side effects.
+2. **Small steps:** Change one thing at a time. Prefer multiple small commits over one large refactor.
+3. **Test first:** Have or add tests before refactoring; run them after.
+
+### Prohibited
+
+1. **Refactoring and new feature in the same change.** Do one or the other per PR/commit.
+2. **Refactoring without tests** where behavior is non-trivial (high regression risk).
+
+## In This Codebase
+
+- **dashboard/server.ts:** Prefer extracting route groups into modules (e.g. `dashboard/routes/chat.ts`, `files.ts`, `projects.ts`, `previews.ts`, `mcp.ts`) and mounting them in `server.ts`. Keep handlers thin; delegate to shared functions.
+- **agent-handler.ts:** Extract command parsing, sender wiring, and streaming vs non-streaming paths into clearly named functions; reduce nesting to 2 levels or fewer where possible.
+- After refactoring: run `npx tsc --noEmit`, and any project lint/tests.

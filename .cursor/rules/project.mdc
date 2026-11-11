@@ -1,0 +1,50 @@
+---
+description: Core project rules for My IDE
+alwaysApply: true
+---
+
+# My IDE — Project Rules
+
+## Stack
+- **Runtime**: Node.js >=22, ESM only (`"type": "module"`) — never use `require()`
+- **Backend**: Express 5, WebSocket (`ws`), SSE where useful, SQLite (`better-sqlite3`)
+- **Frontend**: React 18, Vite, TypeScript (`.tsx`), xterm.js, Monaco Editor
+- **Auth**: JWT cookies + WhatsApp OTP; CSRF guard on mutating `/api` requests (`X-Requested-With: fetch` + origin)
+- **Scaling**: Single Node process — previews, DB visualizer connections, terminals, and project state are local/in-memory. Run one dashboard instance per deployment unless you add external coordination.
+
+## File Layout
+```
+src/index.ts                  — bridge entry point, WhatsApp init, dashboard bootstrap
+src/config.ts                 — all env access
+src/adapters/whatsapp.ts      — Baileys integration for QR + OTP delivery
+src/dashboard/server.ts       — dashboard server and route mounts
+src/dashboard/context.ts      — shared route context and safe paths
+src/dashboard/auth.ts         — OTP/JWT auth
+src/dashboard/client/src/
+  api.ts                      — always use this for client fetches
+  index.css + styles/*.css    — CSS barrel + theme/component partials
+```
+
+## Backend Rules
+- Use `import/export`; never `require()`.
+- Read env vars only through `src/config.ts`, except dotenv/bootstrap/setup code.
+- Mutating `/api` requests hit global `csrfGuard` on `/api`.
+- Never log API keys, `DASHBOARD_SECRET`, OTPs, auth tokens, or other secrets.
+- Spawn long-running work with `child_process.spawn`, never `execSync`.
+- Validate user-controlled paths with `safePath()` and the sensitive-path blocklist.
+
+## Frontend Rules
+- Use `api(path, opts)` from `src/dashboard/client/src/api.ts`; do not call raw `fetch()` except inside `api.ts`.
+- Use CSS variables (`var(--bg)`, `var(--accent)`, `var(--border)`) instead of hardcoded colors.
+- Use `useLayout()` for panel/sidebar state and `EditorContext` for open files.
+- After editing CSS, run `npm run build:dashboard` from the project root.
+- Components go in `src/dashboard/client/src/components/`.
+
+## Git Rules
+- Never push directly to `main`.
+- Never use `git commit --no-verify` or force-push to main.
+- Do not commit `.env`, `auth_store/`, `bridge-data/`, or credentials.
+
+## Current Baseline
+
+Legacy Cursor/Claude orchestration was removed. Ordinary non-OTP WhatsApp text still returns the disabled-feature response. Optional Mastra dashboard chat is available when `AGENT_CHAT_ENABLED=1` (`src/agent/`, `/api/agent/chat`).
